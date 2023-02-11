@@ -1,0 +1,9 @@
+.main-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.body-section {
+  margin-top: 80px;
+  margin-left: 250px;
+}
