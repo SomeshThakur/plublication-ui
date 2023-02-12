@@ -14,7 +14,7 @@ export const Login: FunctionComponent = () => {
 
     const handleLogin = () => {
         login().then(() => {
-            navigate(state?.path || "/dashboard");
+            navigate("/dashboard");
         });
     };
 
