@@ -1,10 +1,11 @@
+import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
 import useAuth from '../../utils/useAuth';
 
 export const Header: FunctionComponent = (): JSX.Element => {
-  const { authed, logout } = useAuth();
+  const { userAuth, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -14,11 +15,11 @@ export const Header: FunctionComponent = (): JSX.Element => {
   return (
     <AppBar position="fixed" style={{ boxShadow: 'none', zIndex: 1000000 }} >
       <Toolbar style={{ gap: 25 }}>
-        <Typography variant="h6" style={{ padding: '10px' }}>My Books App</Typography>
+        <Typography variant="h6" style={{ padding: '10px' }}>Publication Management</Typography>
         <div style={{ flexGrow: 1 }} />
         <IconButton edge="end" color="inherit">
         </IconButton>
-        {authed && <Button color='inherit' onClick={handleLogout}>Logout</Button>}
+        {userAuth?.authed && <Button color='inherit' onClick={handleLogout}>Logout</Button>}
       </Toolbar>
     </AppBar>
   );

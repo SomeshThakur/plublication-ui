@@ -1,55 +1,66 @@
-import { Avatar, Box, Checkbox, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { FunctionComponent } from "react";
-import Icon from '@mui/material/Icon';
-import { userRoles } from "../../types/users";
+import { Avatar, Button, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { FunctionComponent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { useUserService } from "../../services/UserService";
+import { pages } from "../../types/pages";
+import { UserDetails } from "../../types/users";
+import useAuth from "../../utils/useAuth";
 
 export const UsersGrid: FunctionComponent = (): JSX.Element => {
+    const { userAuth } = useAuth();
+    const { getUsers } = useUserService();
+
+    const [users, setUsers] = useState<UserDetails[]>();
+
+    useEffect(() => {
+        getUsers().then(users => {
+            setUsers(users);
+        });
+    }, []);
 
     return <Grid >
-        <Typography variant="h4">Users</Typography>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '5%' }}>
+            <Typography variant="h4">Users</Typography>
+            {
+                userAuth?.role?.name === 'Admin' &&
+                <Link to={'/' + pages["Create User"]}><Button variant="contained" color='secondary' >Create User</Button> </Link>
+            }
+        </div>
         <TableContainer sx={{ minWidth: 800 }}>
             <Table>
                 <TableHead>
                     <TableRow>
                         <TableCell>
+                            ID
+                        </TableCell>
+                        <TableCell>
                             Name
                         </TableCell>
                         <TableCell>
-                            Role
+                            User Number
                         </TableCell>
-                        <TableCell align="center">
-                            Actions
+                        <TableCell>
+                            Role
                         </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        new Array(100).fill(0).map((_i, i) => (
-                            <TableRow hover tabIndex={-1} role="checkbox" >
-
+                        users?.length &&
+                        users.map((user) => (
+                            <TableRow hover key={user.id} tabIndex={-1} role="checkbox" >
+                                <TableCell align="left">{user.id}</TableCell>
                                 <TableCell component="th" scope="row" padding="none">
                                     <Stack direction="row" alignItems="center" spacing={2}>
                                         <Avatar />
                                         <Typography variant="subtitle2" noWrap>
-                                            {i} First Name
+                                            {user.firstName} {user.lastName}
                                         </Typography>
                                     </Stack>
                                 </TableCell>
-
-                                <TableCell align="left">{userRoles[Math.floor(Math.random() * userRoles.length)]}</TableCell>
-
-                                <TableCell align="center">
-                                    <Box
-                                        sx={{
-                                            '& > :not(style)': {
-                                                m: 2,
-                                            },
-                                        }}
-                                    >
-                                        <Icon >edit</Icon>
-                                        <Icon >delete</Icon>
-                                    </Box>
-                                </TableCell>
+                                <TableCell component="th" scope="row" padding="none">{user.mobile}</TableCell>
+                                <TableCell align="left">{user.role.name}</TableCell>
                             </TableRow>
                         ))
                     }

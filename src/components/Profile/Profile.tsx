@@ -1,38 +1,61 @@
-import { Container, FormControl, Table, TableBody, TableCell, TableRow, TextField, Typography, Avatar } from "@mui/material";
+import { Container, Grid, TextField, Typography } from "@mui/material";
 import { FunctionComponent } from "react";
 
+import useAuth from "../../utils/useAuth";
+
 export const Profile: FunctionComponent = (): JSX.Element => {
+    const { userAuth } = useAuth();
+
     return <Container>
         <Typography variant="h4" gutterBottom>
             My Profile
         </Typography>
-        <Table >
-            <TableBody >
-                <TableRow>
-                    <TableCell >
-                        <Avatar />
-                    </TableCell>
-                </TableRow>
 
-                <TableRow>
-                    <TableCell padding="normal">
-                        <TextField label="FirstName" value={"First Name"} variant="outlined" />
-                    </TableCell>
-                    <TableCell padding="normal">
-                        <TextField label="LastName" value={"Last Name"} variant="outlined" />
-                    </TableCell>
-                </TableRow>
-                <TableRow>
-                    <TableCell>
-                        <TextField label="Age" value={"26"} type="number" variant="outlined" />
-                    </TableCell>
-                    <TableCell>
-                        <FormControl >
-                            <TextField label="Sex" value={"Male"} variant="outlined" />
-                        </FormControl>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
-        </Table>
+        <Grid container spacing={2} >
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    label="First Name"
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    value={userAuth?.user.firstName}
+                    fullWidth
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    label="Last Name"
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    value={userAuth?.user.lastName}
+
+                    fullWidth
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    label="User ID"
+                    type='number'
+                    value={userAuth?.user?.mobile}
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    fullWidth
+                />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+                <TextField
+                    label="Role"
+                    InputProps={{
+                        readOnly: true,
+                    }}
+                    value={userAuth?.user?.role?.name}
+                    fullWidth
+                />
+            </Grid>
+
+
+        </Grid>
     </Container>
 }

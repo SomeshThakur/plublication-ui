@@ -1,6 +1,6 @@
 import { Avatar, Box, Checkbox, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { FunctionComponent } from "react";
 import Icon from '@mui/material/Icon';
+import { FunctionComponent } from "react";
 
 export const PaymentsGrid: FunctionComponent = (): JSX.Element => {
 

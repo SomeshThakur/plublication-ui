@@ -1,5 +1,5 @@
 import { PAGE, pages } from "../../types/pages";
-import { UserType } from "../../types/users";
+import { UserRoleType } from "../../types/users";
 
 export type SidebarItemLinkType = {
     label: PAGE;
@@ -7,5 +7,5 @@ export type SidebarItemLinkType = {
 };
 
 export type SidebarItemType = {
-    [key in UserType]: SidebarItemLinkType[];
+    [key in UserRoleType]: SidebarItemLinkType[];
 };

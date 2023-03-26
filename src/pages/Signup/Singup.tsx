@@ -1,4 +1,4 @@
-import { Grid, TextField, FormControlLabel, Radio, Button } from "@mui/material";
+import { Button, FormControlLabel, Grid, Radio, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { FunctionComponent, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ export const SignUp: FunctionComponent = (): JSX.Element => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Validate the form
-        if (!firstName || !lastName || !age || !sex || !role) {
+        if ((firstName === "") || (lastName === "") || age > 0 || (sex === "") || (role === "")) {
             setError("All fields are required");
             return;
         }
@@ -150,7 +150,7 @@ export const SignUp: FunctionComponent = (): JSX.Element => {
                         />
                     </Grid>
                 </Grid>
-                {error && (
+                {(error !== "") && (
                     <Grid item xs={12}>
                         <div style={{ color: "red" }}>{error}</div>
                     </Grid>

@@ -1,36 +1,86 @@
 import styled from "@emotion/styled";
-import { Grid, CardHeader, CardContent, Container, Card, Typography } from "@mui/material";
-import React from "react";
+import { Card, CardHeader, Container, Grid, Typography } from "@mui/material";
+import React, { useEffect, useMemo, useState } from "react";
+
+import { useOrdersService } from "../../services/OrderService";
+import { usePublicationsService } from "../../services/PublicationService";
+import { useUserService } from "../../services/UserService";
+import useAuth from "../../utils/useAuth";
 
 
 const Dashboard: React.FC = () => {
+    const [publicationsCount, setPublicationsCount] = useState<number>();
+    const [userCount, setUserCount] = useState<number>();
+    const [orderCount, setOrderCount] = useState<number>();
+    const { getPublications } = usePublicationsService();
+    const { getOrders } = useOrdersService();
+
+
+    const { getUsers } = useUserService();
+    const { userAuth } = useAuth();
+
+    const canSeePubsCount = useMemo(() => {
+        return userAuth?.role?.name === 'Admin' || userAuth?.role?.name === 'Distributor';
+    }, [userAuth]);
+
+    const canSeeUsersCount = useMemo(() => {
+        return userAuth?.role?.name === 'Admin';
+    }, [userAuth]);
+
+    const canSeeOrdersCount = useMemo(() => {
+        return userAuth?.role?.name === 'Admin' || userAuth?.role?.name === 'Distributor';
+    }, [userAuth]);
+
+    useEffect(() => {
+        if (userAuth?.authed && canSeePubsCount) {
+            getPublications().then(p => setPublicationsCount(p?.length));
+            getUsers().then(u => setUserCount(u?.length));
+            getOrders().then(o => setOrderCount(o.data?.length));
+        }
+    }, [userAuth]);
+
     return (
         <StyledContainer>
             <Grid container spacing={3}>
-                <Grid item xs={12} sm={4}>
-                    <StyledCard>
-                        <StyledCircle color="#f44336">
-                            <StyledTypography variant="h4">100</StyledTypography>
-                        </StyledCircle>
-                        <CardHeader title="Number of Publications" />
-                    </StyledCard>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <StyledCard>
-                        <StyledCircle color="#4caf50">
-                            <StyledTypography variant="h4">50</StyledTypography>
-                        </StyledCircle>
-                        <CardHeader title="Number of Users" />
-                    </StyledCard>
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <StyledCard>
-                        <StyledCircle color="#2196f3">
-                            <StyledTypography variant="h4">20</StyledTypography>
-                        </StyledCircle>
-                        <CardHeader title="Number of Orders" />
-                    </StyledCard>
-                </Grid>
+                {canSeePubsCount &&
+                    <Grid item xs={12} sm={4}>
+                        <StyledCard>
+                            <StyledCircle color="#f44336">
+                                <StyledTypography variant="h4">{publicationsCount}</StyledTypography>
+                            </StyledCircle>
+                            <CardHeader title="Number of Publications" />
+                        </StyledCard>
+                    </Grid>
+                }
+                {
+                    canSeeUsersCount && <Grid item xs={12} sm={4}>
+                        <StyledCard>
+                            <StyledCircle color="#4caf50">
+                                <StyledTypography variant="h4">{userCount}</StyledTypography>
+                            </StyledCircle>
+                            <CardHeader title="Number of Users" />
+                        </StyledCard>
+                    </Grid>
+
+                }
+                {canSeeOrdersCount &&
+                    <Grid item xs={12} sm={4}>
+                        <StyledCard>
+                            <StyledCircle color="#2196f3">
+                                <StyledTypography variant="h4">{orderCount}</StyledTypography>
+                            </StyledCircle>
+                            <CardHeader title="Number of Orders" />
+                        </StyledCard>
+                    </Grid>
+                }
+                {
+                    !canSeePubsCount && !canSeePubsCount && !canSeeUsersCount && (
+                        <Grid item xs={12} sm={4}>
+                            No data for the role: {userAuth?.role?.name}
+                        </Grid>
+
+                    )
+                }
             </Grid>
         </StyledContainer>
     );

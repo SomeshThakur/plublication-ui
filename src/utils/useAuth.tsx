@@ -1,39 +1,63 @@
-import * as React from "react";
+import { createContext, useContext, useState } from "react";
 
-const authContext = React.createContext<Auth>({} as Auth);
+import { loginService } from "../services/AuthService";
+import { UserDetails, UserRole } from "../types/users";
 
-type Auth = {
-    authed: boolean;
-    login(): Promise<void>;
+interface AuthContextData {
+    userAuth: UserAuth | null;
+    login(username: string, password: string): Promise<Token>;
     logout(): Promise<void>;
 }
 
+interface UserAuth {
+    authed: string;
+    role: UserRole;
+    user: UserDetails
+}
+
+interface Token {
+    message: string;
+    token: string;
+    errors: unknown;
+}
+
+export const authContext = createContext<AuthContextData>({} as AuthContextData);
+
 function useAuth() {
-    const [authed, setAuthed] = React.useState(false);
+    const [userAuth, setUserAuth] = useState<UserAuth | null>(null);
 
     return {
-        authed,
-        login() {
-            return new Promise<void>((res) => {
-                setAuthed(true);
-                res();
-            });
+        userAuth,
+        async login(username: string, password: string): Promise<Token> {
+            const data = await loginService(username, password);
+            if (data.token) {
+                setUserAuth({
+                    authed: data.token,
+                    role: data.user.role,
+                    user: data.user,
+                });
+            }
+            return data;
         },
         logout() {
             return new Promise<void>((res) => {
-                setAuthed(false);
+                setUserAuth(null);
                 res();
             });
-        }
+        },
     };
 }
 
-export const AuthProvider = ({ children }: { children: any }): JSX.Element => {
+export const AuthProvider = ({
+    children,
+}: {
+    children: React.ReactNode;
+}): JSX.Element => {
     const auth = useAuth();
 
-    return <authContext.Provider value={auth}> {children} </authContext.Provider>;
-}
+    return <authContext.Provider value={auth}>{children}</authContext.Provider>;
+};
 
 export default function AuthConsumer() {
-    return React.useContext(authContext);
+    return useContext(authContext);
 }

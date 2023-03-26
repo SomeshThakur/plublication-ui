@@ -24,10 +24,10 @@ import { PAGE, pages } from "../types/pages";
 //     - List View
 // - Account information (All)
 //     - Profile page component
-const pagesThatAdminCanSee: PAGE[] = ["Dashboard", "All Orders", "All Payments", "All Publications", "All Users", "My Profile"];
-const pagesThatEditorCanSee: PAGE[] = ["Dashboard", "My Publications", "My Payments", "My Profile"];
-const pagesThatAuthorCanSee: PAGE[] = ["Dashboard", "My Publications", "My Payments", "My Profile"];
-const pagesThatDistributorCanSee: PAGE[] = ["Dashboard", "My Publications", "My Orders", "My Payments", "My Profile"];
+const pagesThatAdminCanSee: PAGE[] = ["Dashboard", "All Orders", "All Publications", "All Users", "My Profile"];
+const pagesThatEditorCanSee: PAGE[] = ["Dashboard", "My Publications", "My Profile"];
+const pagesThatAuthorCanSee: PAGE[] = ["Dashboard", "My Publications", "My Profile"];
+const pagesThatDistributorCanSee: PAGE[] = ["Dashboard", "All Publications", "All Orders", "My Profile"];
 
 const pageKeys = Object.keys(pages);
 const filterByPage = (key: PAGE) => pageKeys.includes(key);

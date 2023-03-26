@@ -1,11 +1,14 @@
-import { useLocation, Navigate } from "react-router-dom";
+import { useTabContext } from "@mui/base";
+import { Navigate, useLocation } from "react-router-dom";
+
 import useAuth from "./useAuth";
 
 export function RequireAuth({ children }: { children: any }) {
-    const { authed } = useAuth();
+    const { userAuth } = useAuth();
+
     const location = useLocation();
 
-    return authed === true ? (
+    return userAuth?.authed?.length ? (
         children
     ) : (
         <Navigate to="/login" replace state={{ path: location.pathname }} />

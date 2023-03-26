@@ -1,72 +1,65 @@
-import { Avatar, Box, Checkbox, Grid, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { FunctionComponent } from "react";
-import Icon from '@mui/material/Icon';
+import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { FunctionComponent, useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+
+import { usePublicationsService } from "../../services/PublicationService";
+import { pages } from "../../types/pages";
+import { Publication } from "../../types/publication";
+import useAuth from "../../utils/useAuth";
 
 export const PublicationsGrid: FunctionComponent = (): JSX.Element => {
+    const [publications, setPublications] = useState<Publication[]>();
+    const { getPublications } = usePublicationsService();
+    const { userAuth } = useAuth();
+
+
+    useEffect(() => {
+        getPublications().then(publications => {
+            setPublications(publications);
+        });
+    }, [])
+
 
     return <Grid >
-        <Typography variant="h4">Publications</Typography>
+        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '5%' }}>
+            <Typography variant="h4">Publications</Typography>
+            {
+                (userAuth?.role?.name === 'Admin' || userAuth?.role?.name === 'Editor') &&
+                <Link to={'/' + pages["Create Publication"]}><Button variant="contained" color='secondary' >Create Publication</Button> </Link>
+            }
+        </div>
         <TableContainer sx={{ minWidth: 800 }}>
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>
-                            Name
-                        </TableCell>
-                        <TableCell>
-                            Author
-                        </TableCell>
-                        <TableCell>
-                            Year
-                        </TableCell>
-                        <TableCell>
-                            Published
-                        </TableCell>
-                        <TableCell>
-                            Notes
-                        </TableCell>
-                        <TableCell align="center">
-                            Actions
-                        </TableCell>
+                        <TableCell>Title</TableCell>
+                        <TableCell>ID</TableCell>
+                        <TableCell>SubTitle</TableCell>
+                        <TableCell>Topic</TableCell>
+                        <TableCell>Published Date</TableCell>
+                        <TableCell>Price</TableCell>
+                        <TableCell>Type</TableCell>
+                        <TableCell>Category</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        new Array(100).fill(0).map((_i, i) => (
-                            <TableRow hover tabIndex={-1} role="checkbox" >
-
-                                <TableCell component="th" scope="row" padding="none">
-                                    <Stack direction="row" alignItems="center" spacing={2}>
-                                        <Avatar />
-                                        <Typography variant="subtitle2" noWrap>
-                                            {i} First Name
-                                        </Typography>
-                                    </Stack>
-                                </TableCell>
-
-                                <TableCell align="left">Author name</TableCell>
-
-                                <TableCell align="left">{Math.floor(new Date().getFullYear() - Math.random() * 100)}</TableCell>
-
-                                <TableCell align="left">yes</TableCell>
-
+                        publications?.length &&
+                        publications.map((publication) => (
+                            <TableRow key={publication.id} hover tabIndex={-1} role="checkbox" >
                                 <TableCell align="left">
-                                    Some sententce......
+                                    <Link to={`/${publication.id}/${publication.category.id}/${pages["Publication Sections"]}`}>
+                                        {publication.title}
+                                    </Link>
                                 </TableCell>
-
-                                <TableCell align="center">
-                                    <Box
-                                        sx={{
-                                            '& > :not(style)': {
-                                                m: 2,
-                                            },
-                                        }}
-                                    >
-                                        <Icon >edit</Icon>
-                                        <Icon >delete</Icon>
-
-                                    </Box>
-                                </TableCell>
+                                <TableCell align="left">
+                                    {publication.id}
+                                </TableCell><TableCell align="left">{publication.subTitle}</TableCell>
+                                <TableCell align="left">{publication.topic}</TableCell>
+                                <TableCell align="left">{publication.publishedDate.split('T')[0]}</TableCell>
+                                <TableCell align="left">{publication.price}</TableCell>
+                                <TableCell align="left">{publication.type.name}</TableCell>
+                                <TableCell align="left">{publication.category.name}</TableCell>
                             </TableRow>
                         ))
                     }

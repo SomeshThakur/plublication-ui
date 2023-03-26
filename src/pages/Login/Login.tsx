@@ -1,6 +1,7 @@
-import { Grid, TextField, Button, Typography } from "@mui/material";
-import { useState, FunctionComponent } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Button, Grid, TextField, Typography } from "@mui/material";
+import { FunctionComponent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import useAuth from "../../utils/useAuth";
 
 export const Login: FunctionComponent = () => {
@@ -10,22 +11,17 @@ export const Login: FunctionComponent = () => {
 
     const navigate = useNavigate();
     const { login } = useAuth();
-    const { state } = useLocation();
 
-    const handleLogin = () => {
-        login().then(() => {
-            navigate("/dashboard");
-        });
-    };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        //TODO: Handling login
-        if (username === "admin" && password === "password") {
-            handleLogin();
-        } else {
-            setError("Incorrect username or password");
+        const data = await login(username, password);
+
+        if (!(data.token)) {
+            setError(data.message || 'Incorrect username or password');
+            return;
         }
+        navigate("/dashboard");
     };
 
     return (
@@ -69,7 +65,7 @@ export const Login: FunctionComponent = () => {
                             onChange={(event) => setPassword(event.target.value)}
                         />
                     </Grid>
-                    {error && (
+                    {(error.length > 0) && (
                         <Grid item xs={12}>
                             <div style={{ color: "red" }}>{error}</div>
                         </Grid>
