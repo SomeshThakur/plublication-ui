@@ -8,7 +8,7 @@ import { Publication } from "../../types/publication";
 import useAuth from "../../utils/useAuth";
 
 export const PublicationsGrid: FunctionComponent = (): JSX.Element => {
-    const [publications, setPublications] = useState<Publication[]>();
+    const [publications, setPublications] = useState<Publication[]>([]);
     const { getPublications } = usePublicationsService();
     const { userAuth } = useAuth();
 
@@ -24,7 +24,7 @@ export const PublicationsGrid: FunctionComponent = (): JSX.Element => {
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', paddingRight: '5%' }}>
             <Typography variant="h4">Publications</Typography>
             {
-                (userAuth?.role?.name === 'Admin' || userAuth?.role?.name === 'Editor') &&
+                (userAuth?.role?.name === 'Admin' || userAuth?.role?.name === 'Author') &&
                 <Link to={'/' + pages["Create Publication"]}><Button variant="contained" color='secondary' >Create Publication</Button> </Link>
             }
         </div>
@@ -44,24 +44,24 @@ export const PublicationsGrid: FunctionComponent = (): JSX.Element => {
                 </TableHead>
                 <TableBody>
                     {
-                        publications?.length &&
-                        publications.map((publication) => (
-                            <TableRow key={publication.id} hover tabIndex={-1} role="checkbox" >
-                                <TableCell align="left">
-                                    <Link to={`/${publication.id}/${publication.category.id}/${pages["Publication Sections"]}`}>
-                                        {publication.title}
-                                    </Link>
-                                </TableCell>
-                                <TableCell align="left">
-                                    {publication.id}
-                                </TableCell><TableCell align="left">{publication.subTitle}</TableCell>
-                                <TableCell align="left">{publication.topic}</TableCell>
-                                <TableCell align="left">{publication.publishedDate.split('T')[0]}</TableCell>
-                                <TableCell align="left">{publication.price}</TableCell>
-                                <TableCell align="left">{publication.type.name}</TableCell>
-                                <TableCell align="left">{publication.category.name}</TableCell>
-                            </TableRow>
-                        ))
+                        publications?.length > 0 ?
+                            publications.map((publication) => (
+                                <TableRow key={publication.id} hover tabIndex={-1} role="checkbox" >
+                                    <TableCell align="left">
+                                        <Link to={`/${publication.id}/${publication.category.id}/${pages["Publication Sections"]}`}>
+                                            {publication.title}
+                                        </Link>
+                                    </TableCell>
+                                    <TableCell align="left">
+                                        {publication.id}
+                                    </TableCell><TableCell align="left">{publication.subTitle}</TableCell>
+                                    <TableCell align="left">{publication.topic}</TableCell>
+                                    <TableCell align="left">{publication.publishedDate.split('T')[0]}</TableCell>
+                                    <TableCell align="left">{publication.price}</TableCell>
+                                    <TableCell align="left">{publication.type.name}</TableCell>
+                                    <TableCell align="left">{publication.category.name}</TableCell>
+                                </TableRow>
+                            )) : <>No publicaitons available</>
                     }
                 </TableBody>
             </Table>

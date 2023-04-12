@@ -58,13 +58,14 @@ export const PublicationForm = () => {
         setCategory("" as unknown as Category);
         setType(null as unknown as PublicationType);
         setTopic("");
+        setPrice("");
         setSubTitle("");
     }
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
 
-        if (!title || !type || !subTitle || !category || !topic || price?.trim()?.length) {
+        if (!title || !type || !subTitle || !category || !topic || !price.trim()?.length) {
             setError("All fields are required.");
             return;
         }
@@ -186,7 +187,7 @@ export const PublicationForm = () => {
                         <TextField
                             type={'number'}
                             label="Price"
-                            value={topic}
+                            value={price}
                             onChange={(e) => setPrice(e.target.value)}
                             fullWidth
 

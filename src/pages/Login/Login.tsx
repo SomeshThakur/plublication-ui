@@ -33,8 +33,7 @@ export const Login: FunctionComponent = () => {
             height: '100vh',
             width: '100vw'
         }}>
-            <Typography variant="h3">Publication UI</Typography>
-            <Typography variant="h6">Login</Typography>
+            <Typography variant="h3">Transaction Management System for a publisher</Typography>
 
             <form style={{ padding: '50px' }} onSubmit={handleSubmit}>
                 <Grid style={{ display: 'flex', gap: '10px' }} container spacing={2}>
@@ -79,14 +78,6 @@ export const Login: FunctionComponent = () => {
                         Login
                     </Button>
 
-                    <Button
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        onClick={() => navigate('/signup')}
-                    >
-                        Sign Up
-                    </Button>
                 </Grid>
             </form>
         </div >

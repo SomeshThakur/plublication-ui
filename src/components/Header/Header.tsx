@@ -1,4 +1,4 @@
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,9 @@ export const Header: FunctionComponent = (): JSX.Element => {
   return (
     <AppBar position="fixed" style={{ boxShadow: 'none', zIndex: 1000000 }} >
       <Toolbar style={{ gap: 25 }}>
-        <Typography variant="h6" style={{ padding: '10px' }}>Publication Management</Typography>
+        <Grid>
+          <Typography variant="h5">Transaction Management System</Typography>
+        </Grid>
         <div style={{ flexGrow: 1 }} />
         <IconButton edge="end" color="inherit">
         </IconButton>

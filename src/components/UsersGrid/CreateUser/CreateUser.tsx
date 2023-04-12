@@ -58,7 +58,7 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
 
         if (userId.length < 10) {
             setSuccess("");
-            setError("UserID should have 10 digits.");
+            setError("User Number should have 10 digits.");
             return;
         }
         if (password !== confirmPassword) {
@@ -117,7 +117,7 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
                 <Grid container spacing={2} >
                     <Grid item xs={12}>
                         <TextField
-                            label="User ID"
+                            label="User Number"
                             type='number'
 
                             value={userId}

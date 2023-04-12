@@ -61,7 +61,7 @@ const PublicationSectionForm = () => {
             });
             console.log({ response })
             if (response.status === 201) {
-                setSuccess("Publication Created");
+                setSuccess("Publication section created successfully");
 
                 clearAll();
             } else {
@@ -97,6 +97,35 @@ const PublicationSectionForm = () => {
                         )
                     }
                 </Grid>
+                <Grid item xs={12} marginY={1} >
+
+
+                    <FormControl fullWidth required>
+                        <InputLabel id="section-type-label">Section Type</InputLabel>
+                        <Select
+                            labelId="section-type-label"
+                            id="section-type"
+                            label="Section Type"
+
+                            value={sectionTypeId}
+                            onChange={handleSectionTypeChange}
+                            required
+                            fullWidth
+                        >
+                            <MenuItem value="" >
+                                <em>Select a publication type </em>
+                            </MenuItem>
+                            {
+                                sectionTypes?.length &&
+                                sectionTypes.map(st =>
+                                    <MenuItem key={st.id} value={st.id} >
+                                        {st.name}
+                                    </MenuItem>
+                                )
+                            }
+                        </Select>
+                    </FormControl>
+                </Grid>
                 <Grid container spacing={2} >
                     <Grid item xs={12} >
                         <TextField
@@ -112,6 +141,7 @@ const PublicationSectionForm = () => {
                     <Grid item xs={12} maxHeight={'500px'}>
                         <TextField
                             id="content"
+                            label="Content"
                             value={content}
                             onChange={handleContentChange}
                             required
@@ -126,35 +156,7 @@ const PublicationSectionForm = () => {
                             fullWidth
                         />
                     </Grid>
-                    <Grid item xs={12} marginY={1} >
 
-
-                        <FormControl fullWidth required>
-                            <InputLabel id="section-type-label">Section Type</InputLabel>
-                            <Select
-                                labelId="section-type-label"
-                                id="section-type"
-                                label="Section Type"
-
-                                value={sectionTypeId}
-                                onChange={handleSectionTypeChange}
-                                required
-                                fullWidth
-                            >
-                                <MenuItem value="" >
-                                    <em>Select a publication type </em>
-                                </MenuItem>
-                                {
-                                    sectionTypes?.length &&
-                                    sectionTypes.map(st =>
-                                        <MenuItem key={st.id} value={st.id} >
-                                            {st.name}
-                                        </MenuItem>
-                                    )
-                                }
-                            </Select>
-                        </FormControl>
-                    </Grid>
                     <Grid item xs={12} marginX={"25%"} whiteSpace='nowrap' width={'150px'} >
 
                         <Button fullWidth type="submit" variant="contained" color="primary">Submit</Button>

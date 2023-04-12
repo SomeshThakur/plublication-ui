@@ -35,7 +35,7 @@ export const Profile: FunctionComponent = (): JSX.Element => {
             </Grid>
             <Grid item xs={12} sm={6}>
                 <TextField
-                    label="User ID"
+                    label="User Number"
                     type='number'
                     value={userAuth?.user?.mobile}
                     InputProps={{

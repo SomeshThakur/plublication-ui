@@ -54,7 +54,8 @@ export const OrdersGrid: FunctionComponent = (): JSX.Element => {
                                 <TableCell title={`${item.amount}$`}>
                                     {item.quantity} x <span title={`${item.unitPrice}$`}> {item.publication.title}</span><br />
                                 </TableCell>
-                            </TableRow>)}</TableCell>
+                            </TableRow>)}
+                            </TableCell>
                             <TableCell align="left">{order.amount}$</TableCell>
                             <TableCell align="left">{`${order.receiver.firstName}  ${order.receiver.lastName}`}</TableCell>
                         </TableRow>) :
