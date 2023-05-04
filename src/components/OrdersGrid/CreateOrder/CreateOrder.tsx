@@ -172,6 +172,7 @@ const CreateOrderForm = () => {
                             required
                             fullWidth
                         />
+                        <Typography variant='subtitle2'>Quantity: 10 - 100</Typography>
 
                     </Grid>
                     <Grid item xs={12} >

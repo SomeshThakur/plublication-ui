@@ -21,7 +21,8 @@ import { UserRole } from "../../../types/users";
 
 
 export const CreateUserForm: FunctionComponent = (): JSX.Element => {
-    const [userId, setUserId] = useState("");
+    const [user_name, setUserName] = useState("");
+    const [mobile, setMobile] = useState("");
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [password, setPassword] = useState("");
@@ -50,15 +51,15 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
 
-        if (!userId || !firstName || !password || !role) {
+        if (!user_name || !firstName || !password || !role) {
             setSuccess("");
             setError("All fields are required.");
             return;
         }
 
-        if (userId.length < 10) {
+        if (mobile.length < 10) {
             setSuccess("");
-            setError("User Number should have 10 digits.");
+            setError("Mobile should have 10 digits.");
             return;
         }
         if (password !== confirmPassword) {
@@ -68,7 +69,7 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
         }
 
         try {
-            const { data, status } = await createUser({ first_name: firstName, last_name: lastName, password, role_id: role, mobile: userId, employee_code: userId });
+            const { data, status } = await createUser({ first_name: firstName, last_name: lastName, password, role_id: role, mobile, user_name, employee_code: user_name });
             if (status === 201) {
                 setError("");
                 setSuccess(data.message);
@@ -88,7 +89,7 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
     };
 
     const clearAll = () => {
-        setUserId("");
+        setUserName("");
         setRole("");
         setPassword("");
         setConfirmPassword("");
@@ -117,11 +118,18 @@ export const CreateUserForm: FunctionComponent = (): JSX.Element => {
                 <Grid container spacing={2} >
                     <Grid item xs={12}>
                         <TextField
-                            label="User Number"
-                            type='number'
-
-                            value={userId}
-                            onChange={(e) => setUserId(e.target.value)}
+                            label="Username"
+                            value={user_name}
+                            onChange={(e) => setUserName(e.target.value)}
+                            fullWidth
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            label="Mobile"
+                            value={mobile}
+                            type="number"
+                            onChange={(e) => setMobile(e.target.value)}
                             fullWidth
                         />
                     </Grid>

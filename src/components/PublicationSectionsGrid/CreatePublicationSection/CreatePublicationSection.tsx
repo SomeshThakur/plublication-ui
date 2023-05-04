@@ -1,22 +1,29 @@
-import { Alert, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextareaAutosize, TextField, Typography } from '@mui/material';
+import { Alert, Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { usePublicationSectionService } from '../../../services/PublicatoinSectionsService';
 import { FormCustomEvent } from '../../../types/event';
-import { PublicationSectionType } from '../../../types/publication';
+import { PublicationSection, PublicationSectionType } from '../../../types/publication';
 
 
 const PublicationSectionForm = () => {
-    const [title, setTitle] = useState('');
-    const [content, setContent] = useState('');
+    const { state }: { state: PublicationSection } = useLocation();
+
+    const [title, setTitle] = useState(state?.title || '');
+    const [content, setContent] = useState(state?.content || '');
     const [sectionTypeId, setSectionTypeId] = useState('');
     const [sectionTypes, setSectionTypes] = useState<PublicationSectionType[]>([]);
-    const { getPublicationSectionTypes, createPublicationSectionType } = usePublicationSectionService();
+    const { getPublicationSectionTypes, updatePublicationSection, createPublicationSection } = usePublicationSectionService();
     const { publicationID, categoryID } = useParams();
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
 
+    useEffect(() => {
+        if (state === undefined || state === null || !state?.sectionType) return;
+        if (!sectionTypes.length) return;
+        setSectionTypeId(state?.sectionType?.id);
+    }, [state, sectionTypes])
 
 
     useEffect(() => {
@@ -36,7 +43,6 @@ const PublicationSectionForm = () => {
     };
 
     const handleSectionTypeChange = (event: FormCustomEvent) => {
-        console.log({ event })
         setSectionTypeId(event.target.value);
     };
 
@@ -54,16 +60,30 @@ const PublicationSectionForm = () => {
                 setError("Publication ID is missing");
                 return;
             }
-            const response = await createPublicationSectionType(publicationID, {
-                title,
-                content,
-                sectionTypeId: Number(sectionTypeId)
-            });
-            console.log({ response })
-            if (response.status === 201) {
-                setSuccess("Publication section created successfully");
 
-                clearAll();
+            let response;
+            if (state) {
+                response = await updatePublicationSection(publicationID, {
+                    id: state?.id,
+                    title,
+                    content,
+                    sectionTypeId: Number(sectionTypeId)
+                });
+            } else {
+                response = await createPublicationSection(publicationID, {
+                    title,
+                    content,
+                    sectionTypeId: Number(sectionTypeId)
+                });
+            }
+
+            if (response.status === 201) {
+                setSuccess(`Publication section ${state ? 'updated' : 'created'} successfully`);
+                if (!state)
+                    clearAll();
+                if (state) {
+                    setTimeout(() => setSuccess(""), 5000)
+                }
             } else {
                 setError(response.data?.message);
             }
@@ -159,7 +179,7 @@ const PublicationSectionForm = () => {
 
                     <Grid item xs={12} marginX={"25%"} whiteSpace='nowrap' width={'150px'} >
 
-                        <Button fullWidth type="submit" variant="contained" color="primary">Submit</Button>
+                        <Button fullWidth type="submit" variant="contained" color="primary">{state ? 'Update' : 'Submit'}</Button>
                     </Grid>
                 </Grid>
             </Box>

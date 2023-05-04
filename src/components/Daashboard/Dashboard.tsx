@@ -1,10 +1,12 @@
 import styled from "@emotion/styled";
 import { Card, CardHeader, Container, Grid, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 
 import { useOrdersService } from "../../services/OrderService";
 import { usePublicationsService } from "../../services/PublicationService";
 import { useUserService } from "../../services/UserService";
+import { pages } from "../../types/pages";
 import useAuth from "../../utils/useAuth";
 
 
@@ -44,33 +46,39 @@ const Dashboard: React.FC = () => {
             <Grid container spacing={3}>
                 {canSeePubsCount &&
                     <Grid item xs={12} sm={4}>
-                        <StyledCard>
-                            <StyledCircle color="#f44336">
-                                <StyledTypography variant="h4">{publicationsCount}</StyledTypography>
-                            </StyledCircle>
-                            <CardHeader title="Number of Publications" />
-                        </StyledCard>
+                        <Link to={'/' + pages["All Publications"]} style={{ textDecoration: 'none' }}>
+                            <StyledCard>
+                                <StyledCircle color="#f44336">
+                                    <StyledTypography variant="h4">{publicationsCount}</StyledTypography>
+                                </StyledCircle>
+                                <CardHeader title="Number of Publications" />
+                            </StyledCard>
+                        </Link>
                     </Grid>
                 }
                 {
                     canSeeUsersCount && <Grid item xs={12} sm={4}>
-                        <StyledCard>
-                            <StyledCircle color="#4caf50">
-                                <StyledTypography variant="h4">{userCount}</StyledTypography>
-                            </StyledCircle>
-                            <CardHeader title="Number of Users" />
-                        </StyledCard>
+                        <Link to={'/' + pages["All Users"]} style={{ textDecoration: 'none' }}>
+                            <StyledCard>
+                                <StyledCircle color="#4caf50">
+                                    <StyledTypography variant="h4">{userCount}</StyledTypography>
+                                </StyledCircle>
+                                <CardHeader title="Number of Users" />
+                            </StyledCard>
+                        </Link>
                     </Grid>
 
                 }
                 {canSeeOrdersCount &&
                     <Grid item xs={12} sm={4}>
-                        <StyledCard>
-                            <StyledCircle color="#2196f3">
-                                <StyledTypography variant="h4">{orderCount}</StyledTypography>
-                            </StyledCircle>
-                            <CardHeader title="Number of Orders" />
-                        </StyledCard>
+                        <Link to={'/' + pages["All Orders"]} style={{ textDecoration: 'none' }}>
+                            <StyledCard>
+                                <StyledCircle color="#2196f3">
+                                    <StyledTypography variant="h4">{orderCount}</StyledTypography>
+                                </StyledCircle>
+                                <CardHeader title="Number of Orders" />
+                            </StyledCard>
+                        </Link>
                     </Grid>
                 }
                 {

@@ -7,6 +7,7 @@ export type UserRole = {
 };
 
 export type UserDetails = {
+    userName: string;
     id: string,
     firstName: string,
     lastName: string,
@@ -16,6 +17,7 @@ export type UserDetails = {
 };
 
 export type NewUserDetails = {
+    user_name: string,
     first_name: string,
     last_name: string,
     mobile: string,

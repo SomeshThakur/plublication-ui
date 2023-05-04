@@ -56,7 +56,7 @@ export const PublicationsGrid: FunctionComponent = (): JSX.Element => {
                                         {publication.id}
                                     </TableCell><TableCell align="left">{publication.subTitle}</TableCell>
                                     <TableCell align="left">{publication.topic}</TableCell>
-                                    <TableCell align="left">{publication.publishedDate.split('T')[0]}</TableCell>
+                                    <TableCell align="left">{publication.createdAt && publication.createdAt.split('T')[0]}</TableCell>
                                     <TableCell align="left">{publication.price}</TableCell>
                                     <TableCell align="left">{publication.type.name}</TableCell>
                                     <TableCell align="left">{publication.category.name}</TableCell>

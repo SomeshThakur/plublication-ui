@@ -59,7 +59,7 @@ export interface PublicationSection {
 }
 
 export interface SectionType {
-    id: number
+    id: string
     name: string
     publicationCategory: PublicationCategory
     createdAt: any

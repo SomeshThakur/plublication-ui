@@ -1,3 +1,4 @@
+import { Logout } from '@mui/icons-material';
 import { AppBar, Button, Grid, IconButton, Toolbar, Typography } from '@mui/material';
 import { FunctionComponent } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -21,7 +22,12 @@ export const Header: FunctionComponent = (): JSX.Element => {
         <div style={{ flexGrow: 1 }} />
         <IconButton edge="end" color="inherit">
         </IconButton>
-        {userAuth?.authed && <Button color='inherit' onClick={handleLogout}>Logout</Button>}
+
+        {userAuth?.authed && <Typography variant='h6'> {userAuth?.role.name}</Typography>}
+        {userAuth?.authed && <Button color='inherit' onClick={handleLogout}>Logout
+          <Logout />
+        </Button>}
+
       </Toolbar>
     </AppBar>
   );

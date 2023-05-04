@@ -1,3 +1,4 @@
+import { Edit } from "@mui/icons-material";
 import { Button, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
 import { FunctionComponent, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
@@ -47,6 +48,11 @@ export const PublicationSectionsGrid: FunctionComponent = (): JSX.Element => {
                         <TableCell>
                             Section Type
                         </TableCell>
+                        {userAuth?.role.name === 'Editor' || userAuth?.role.name === 'Admin' &&
+                            <TableCell>
+                                Actions
+                            </TableCell>
+                        }
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -57,7 +63,13 @@ export const PublicationSectionsGrid: FunctionComponent = (): JSX.Element => {
                                     <TableCell align="left">{publication.title}</TableCell>
                                     <TableCell align="left">{publication.content}</TableCell>
                                     <TableCell align="left">{publication?.sectionType?.name}</TableCell>
-
+                                    {userAuth?.role.name === 'Editor' || userAuth?.role.name === 'Admin' &&
+                                        <TableCell>
+                                            <Link to={`/${publicationID}/${categoryID}/${pages["Create Publication Section"]}`} state={publication}>
+                                                <Edit style={{ cursor: 'pointer' }} titleAccess="Edit" />
+                                            </Link>
+                                        </TableCell>
+                                    }
                                 </TableRow>
                             )) :
                             <TableRow >

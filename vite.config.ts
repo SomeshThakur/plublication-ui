@@ -9,7 +9,7 @@ export default defineConfig({
     proxy: {
       // To avoid cors issue
       '^/server/.*': {
-        target: 'http://localhost:8090',
+        target: 'http://34.132.31.226:8090/',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/*.*\/server/, ''),
       }
