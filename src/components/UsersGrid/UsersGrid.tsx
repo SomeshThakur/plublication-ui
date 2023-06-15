@@ -44,6 +44,9 @@ export const UsersGrid: FunctionComponent = (): JSX.Element => {
                             User Number
                         </TableCell>
                         <TableCell>
+                            Password
+                        </TableCell>
+                        <TableCell>
                             Role
                         </TableCell>
                     </TableRow>
@@ -63,6 +66,7 @@ export const UsersGrid: FunctionComponent = (): JSX.Element => {
                                     </Stack>
                                 </TableCell>
                                 <TableCell component="th" scope="row" padding="none">{user.userName}</TableCell>
+                                <TableCell component="th" scope="row" padding="none">{user.password}</TableCell>
                                 <TableCell component="th" scope="row" padding="none">{user.mobile}</TableCell>
                                 <TableCell align="left">{user.role.name}</TableCell>
                             </TableRow>
